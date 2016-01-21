@@ -2,7 +2,7 @@
 
 ## Встановлення
 
-*You need to have [NodeJS](http://nodejs.org/)*
+*Для роботи необхідний [NodeJS](http://nodejs.org/)*
 
 *Ввести в терміналі:*
  
@@ -11,6 +11,10 @@ npm install -g gulp
 
 npm install -g bower
 
+npm init
+
+npm install --save-dev gulp 
+
 ```````
 
 
@@ -18,32 +22,56 @@ npm install -g bower
 
 ``````````
 ├── app
-│   ├── bower_components
-│   ├── images
+│   ├── img
 │   ├── js
-│   │   └── lib
-│   │   │   └── third-party-files.js
+│   │   └── vendor
+│   │   │   └── modernizr.js
 │   │   └── application.js
+│   │   └── common.js
 │   ├── css
-│   │   └── master.css
+│   │   └── main.css
+│   │   └── develop-style.css
 │   ├── partials
-│   │   └── header.html
 │   │   └── footer.html
+│   │   └── form.html
+│   │   └── head.html
+│   │   └── header.html
+│   │   └── header-menu.html
+│   │   └── map-google.html
+│   │   └── template.html
 │   ├── scss
-│   │   └── modules
-│   │   │   └── module-name.scss
-│   │   └── pages
-│   │   │   └── page-landing.scss
+│   │   └── partials
+│   │   │   └── header.scss
+│   │   │   └── footer.scss
 │   │   └── base.scss
-│   │   └── layout.css
-│   │   └── mixins.css
-│   │   └── reset.css
-│   │   └── variables.css
+│   │   └── buttons.scss
+│   │   └── fonts.scss
+│   │   └── forms.scss
+│   │   └── icons.scss
+│   │   └── layout.scss
+│   │   └── mixins.scss
+│   │   └── navbar.scss
+│   │   └── partials.scss
+│   │   └── reset.scss
+│   │   └── responsive.scss
+│   │   └── settings.scss
+│   │   └── typo.scss
+│   │   └── main.scss
 │   └── index.html
 ├── build
-│   └── build-files
+│   ├── img
+│   ├── js
+│   │   └── application.js
+│   │   └── bower.js
+│   │   └── common.js
+│   ├── css
+│   │   └── bower.css
+│   │   └── develop-style.css
+│   │   └── main.css
+│   └── index.html
 ├── zip
 │   └── compressed-files
+├── bower_components
 ├── node_modules
 ├── package.json
 ├── gulpfile.js
@@ -54,3 +82,27 @@ npm install -g bower
 ``````````
 
 **Швидкі команди**
+
+* **gulp** _Запуск проекту_
+
+ ```````
+  gulp
+  ```````
+
+* **prod** _Переключення в режим "production" (публічний та оптимізований)_
+
+ ```````
+  gulp prod
+  ```````
+
+* **Clean** _Видалення всіх файлів з папки build_
+
+ ```````
+  gulp clean
+  ```````
+
+  * **Zip** _Стиснення і збереження в `zip` папку з міткою часу для швидкого обміну_
+
+  ```````
+  gulp zip
+  ```````
