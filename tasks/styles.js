@@ -27,13 +27,13 @@ gulp.task('sass', function () {
 gulp.task('styles', ['sass'], function () {
 
     console.log(config.notify.update('\n--------- Running CSS tasks --------------------------------------------\n'));
-    return gulp.src([config.source.css + '/**/*.css'])
-       /* .pipe(autoprefixer({
+    return gulp.src([config.source.css + '/**/*.css']) 
+        .pipe(autoprefixer({ 
             browsers: config.browserVersion,
             cascade: false
-        }))*/
+        }))
         .pipe(gulpIf(config.production, plugins.minifyCss()))
-        .pipe(plugins.concat('main.css'))
+        //.pipe(plugins.concat('main.css'))
         .pipe(plugins.size())
         .pipe(gulp.dest(config.build.css));
 });

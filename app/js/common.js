@@ -1,9 +1,10 @@
+'use strict'; 
 function scrollUp(block,targetBlock) {
-	$(block).click(function(e){
+	$(block).click(function(event){
+		event.preventDefault();
 		var target = $(targetBlock).offset().top;
 		$('body, html').animate({scrollTop:target},800);
 		return false;
-		e.preventDefault();
 	});
 }   
 

@@ -21,45 +21,35 @@ var filterByExtension = function(extension){
 
 var config = require('./config');
 
-// TASKS
+var bowerFile = require('../bower.json');
+var bowerPackages = bowerFile.dependencies;
+var bowerDir = '../bower_components';
+var packagesOrder = [];
+var mainFiles = [];
 
-gulp.task('bower', function(cb){
-  console.log(config.notify.update('\n--------- Running Bower Task --------------------------------------------\n'));
-  bower.commands.install([], {save: true}, {})
-    .on('end', function(installed){
-      //console.log(update('Bower installation completed'));
-      cb(); // notify gulp that this task is finished
+// Function for adding package name into packagesOrder array in the right order
+function addPackage(name){
+  mainFiles = [];
+  // package info and dependencies
+  var info = require(bowerDir + '/' + name + '/bower.json');
+  var dependencies = info.dependencies;
+
+  // add dependencies by repeat the step
+  if(!!dependencies){
+    underscore.each(dependencies, function(value, key){
+      if(exclude.indexOf(key) === -1){
+        addPackage(key);
+      }
     });
-});
-
-gulp.task('bundle-libraries', ['bower'], function(){
-  var bowerFile = require('../bower.json');
-  var bowerPackages = bowerFile.dependencies;
-  var bowerDir = '../bower_components';
-  var packagesOrder = [];
-  var mainFiles = [];
-
-  // Function for adding package name into packagesOrder array in the right order
-  function addPackage(name){
-    // package info and dependencies
-    var info = require(bowerDir + '/' + name + '/bower.json');
-    var dependencies = info.dependencies;
-
-    // add dependencies by repeat the step
-    if(!!dependencies){
-      underscore.each(dependencies, function(value, key){
-        if(exclude.indexOf(key) === -1){
-          addPackage(key);
-        }
-      });
-    }
-
-    // and then add this package into the packagesOrder array if they are not exist yet
-    if(packagesOrder.indexOf(name) === -1){
-      packagesOrder.push(name);
-    }
   }
 
+  // and then add this package into the packagesOrder array if they are not exist yet
+  if(packagesOrder.indexOf(name) === -1){
+    packagesOrder.push(name);
+  }
+}
+
+function bowerMain (extension) {
   // calculate the order of packages
   underscore.each(bowerPackages, function(value, key){
     if(exclude.indexOf(key) === -1){ // add to packagesOrder if it's not in exclude
@@ -76,7 +66,7 @@ gulp.task('bundle-libraries', ['bower'], function(){
     // get only the .js file if mainFile is an array
     if(underscore.isArray(main)){
       underscore.each(main, function(file){
-        if(underscoreStr.endsWith(file, '.js')){
+        if(underscoreStr.endsWith(file, extension)){
           mainFile = file;
         }
       });
@@ -86,16 +76,41 @@ gulp.task('bundle-libraries', ['bower'], function(){
     mainFile = bowerDir + '/' + bowerPackage + '/' + mainFile;
 
     // only add the main file if it's a js file
-    if(underscoreStr.endsWith(mainFile, '.js')){
+    if(underscoreStr.endsWith(mainFile, extension)){
       mainFiles.push(mainFile.split('../')[1]); //.split() to remove '../' to work properly
     }
   });
+}
 
+// TASKS
+
+gulp.task('bower', function(cb){
+  console.log(config.notify.update('\n--------- Running Bower Task --------------------------------------------\n'));
+  bower.commands.install([], {save: true}, {})
+    .on('end', function(installed){
+      //console.log(update('Bower installation completed'));
+      cb(); // notify gulp that this task is finished
+    });
+});
+
+gulp.task('bundle-libraries', ['bower'], function(){  
   // run the gulp stream
+  bowerMain('.js'); 
   return gulp.src(mainFiles)
     .pipe(sourcemaps.init({loadMaps : true}))
       .pipe(plugins.concat('bower.js'))
       .pipe(gulpIf(config.production, plugins.uglify()))
     .pipe(gulpIf(config.production, sourcemaps.write('./')))
     .pipe(gulp.dest(config.build.js));
+});
+
+gulp.task('bundle-libraries-css', function(){  
+  // run the gulp stream
+  bowerMain('.css'); 
+  return gulp.src(mainFiles)
+    .pipe(sourcemaps.init({loadMaps : true}))
+      .pipe(plugins.concat('bower.css'))
+      .pipe(gulpIf(config.production, plugins.uglify()))
+    .pipe(gulpIf(config.production, sourcemaps.write('./')))
+    .pipe(gulp.dest(config.build.css));
 });

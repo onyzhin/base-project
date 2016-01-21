@@ -7,16 +7,17 @@ var chalk = require('chalk');
 var config =  function() {
 
     // Source Path
-    var src = {
-        root   : 'app',
-        css    : 'app/css',
-        scss   : 'app/scss',
-        js     : 'app/js',
-        images : 'app/images',
+    var src = { 
+        root    : 'app',
+        css     : 'app/css',
+        scss    : 'app/scss',
+        js      : 'app/js',
+        vendorjs: 'app/js/vendor',
+        images  : 'app/img',
         partials: 'app/partials',
-        fonts  : 'app/fonts',
-        bower  : './bower_components',
-        zip    : './zip'
+        fonts   : 'app/fonts',
+        bower   : './bower_components',
+        zip     : './zip'
     };
 
     // Build Path
@@ -24,7 +25,7 @@ var config =  function() {
         root   : 'build',
         css    : 'build/css',
         js     : 'build/js',
-        images : 'build/images',
+        images : 'build/img',
         fonts  : 'build/fonts'
     };
 

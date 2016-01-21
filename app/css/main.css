@@ -183,7 +183,8 @@ img {
   border: 0px solid #8a004e;
   border-radius: 5px;
   outline: none;
-  z-index: 2; }
+  z-index: 2;
+  cursor: pointer; }
   .button:hover {
     background: #a4025e;
     color: #fff; }

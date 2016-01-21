@@ -9,14 +9,27 @@ var gulp = require('gulp'),
 var plugins = gulploadPlugins();
 var config = require('./config');
 
-gulp.task('scripts', function () {
+gulp.task('vendor', function () {
+
+    console.log(config.notify.update('\n--------- Running VENDOR SCRIPT tasks -----------------------------------------\n'));
+    return gulp.src([config.source.js + '/vendor/*.js']) 
+        .pipe(plugins.concat('application.js'))  
+        .pipe(plugins.uglify())  
+        .pipe(plugins.size()) 
+        .pipe(gulp.dest(config.build.js));
+});
+
+gulp.task('scripts', ['vendor'],  function () {
 
     console.log(config.notify.update('\n--------- Running SCRIPT tasks -----------------------------------------\n'));
-    return gulp.src([config.source.js + '/*.js', config.source.js + '/**/*.js'])
+    return gulp.src([config.source.js + '/*.js'])
+        .pipe(plugins.fileInclude({
+            prefix: '@@',
+            basepath: config.source.vendorjs
+        })) 
         .pipe(plugins.jshint('.jshintrc'))
         .pipe(plugins.jshint.reporter(jshintStylish))
-        .pipe(plugins.concat('common.js')) 
         .pipe(gulpIf(config.production, plugins.uglify()))
-        .pipe(plugins.size())
+        .pipe(plugins.size()) 
         .pipe(gulp.dest(config.build.js));
 });
