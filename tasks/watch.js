@@ -17,7 +17,7 @@ gulp.task('watch', function () {
         CSS     = gulp.watch(['app/*.css', 'app/css/**/*.css'], ['styles']),
         SASS    = gulp.watch(['app/*.scss', 'app/scss/**/*.scss'], ['styles']),
         FONTS   = gulp.watch(['app/fonts/*.*', 'app/fonts/**/*.*'], ['fonts']),
-        IMG     = gulp.watch(['app/images/*.*', 'app/images/**/*.*'], ['image']),
+        IMG     = gulp.watch(['app/img/*.*', 'app/img/**/*.*'], ['image']),
         BOWER   = gulp.watch(['bower_components/**/*.*', 'bower_components/**/**', 'bower.json'], ['bundle-libraries']);
 
     var log = function (event) {
