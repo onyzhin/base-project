@@ -110,7 +110,7 @@ gulp.task('bundle-libraries-css', function(){
   return gulp.src(mainFiles)
     .pipe(sourcemaps.init({loadMaps : true}))
       .pipe(plugins.concat('bower.css'))
-      .pipe(gulpIf(config.production, plugins.uglify()))
+      .pipe(gulpIf(config.production, plugins.minifyCss()))
     .pipe(gulpIf(config.production, sourcemaps.write('./')))
     .pipe(gulp.dest(config.build.css));
 });
